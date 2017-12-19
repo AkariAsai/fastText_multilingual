@@ -15,8 +15,10 @@ def main():
     idx = 0
     result = {}
     result_f = open("en_ja_multifast.txt", "w")
+    en_word_list = list(en_dic.word2id.keys())
+    print("The total length of English pretrained vector : " + str(len(en_word_list)))
 
-    for en_word in tqdm(list(en_dic.keys())):
+    for en_word in tqdm(en_word_list):
         ja_words = ja_dic.translate_k_nearest_neighbour(en_dic[en_word], k=15)
         result[en_word] = ja_words
         idx += 1
