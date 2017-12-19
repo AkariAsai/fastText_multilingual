@@ -26,7 +26,15 @@ for en_word in en_word_list:
     result[en_word] = ja_words
 
 
-text = json.dumps(result, sort_keys=True, ensure_ascii=False, indent=2)
+text = json.dump(result, open("result.json", "w"),
+                 ensure_ascii=False, indent=2)
 
-with open("result.json", "w") as fh:
-    fh.write(text.encode("utf-8"))
+# with open("result.json", "w") as fh:
+#     fh.write(text.encode("utf-8"))
+
+
+def main():
+
+
+if __name__ == "__main__":
+    main()
