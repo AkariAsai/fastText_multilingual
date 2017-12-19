@@ -14,6 +14,7 @@ en_word_list = ["cat", "dog", "apple", "car",
 ja_word_list = ["猫", "犬", "りんご", "車", "電車", "学校", "生徒", "先生"]
 
 result_f = open("multi_fast.txt", "w")
+result = {}
 # Ja_word_list 10 nearest neighbor
 for ja_word in ja_word_list:
     en_words = en_dic.translate_k_nearest_neighbour(ja_dic[ja_word], k=20)
