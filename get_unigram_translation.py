@@ -24,7 +24,9 @@ def main():
         idx += 1
         result[en_word] = ja_words
         resut_str = ",".join(result[en_word])
-        result_f.write(idx + "," + en_word + "," + resut_str + "\n")
+        result_f.write(str(idx) + "," + en_word + "," + resut_str + "\n")
+        if idx > 100:
+            exit()
 
     result_f.close()
 
