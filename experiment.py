@@ -1,4 +1,5 @@
 from fasttext import FastVector
+import json
 
 ja_dic = FastVector(vector_file='../vecmap/data/wiki.ja.vec')
 en_dic = FastVector(vector_file='../vecmap/data/wiki.en.vec')
@@ -19,11 +20,13 @@ for ja_word in ja_word_list:
     en_words = en_dic.translate_k_nearest_neighbour(ja_dic[ja_word], k=10)
     result[ja_word] = en_words
 
+# En_word_list 10 nearest neighbor
 for en_word in en_word_list:
     ja_words = ja_dic.translate_k_nearest_neighbour(en_dic[en_word], k=10)
     result[en_word] = ja_words
 
 
 text = json.dumps(result, sort_keys=True, ensure_ascii=False, indent=2)
+
 with open("result.json", "w") as fh:
     fh.write(text.encode("utf-8"))
