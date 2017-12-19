@@ -30,11 +30,11 @@ text = json.dump(result, open("result.json", "w"),
                  ensure_ascii=False, indent=2)
 
 # with open("result.json", "w") as fh:
-#     fh.write(text.encode("utf-8"))
-
-
-def main():
-
-
-if __name__ == "__main__":
-    main()
+# #     fh.write(text.encode("utf-8"))
+#
+#
+# def main():
+#
+#
+# if __name__ == "__main__":
+#     main()
