@@ -13,12 +13,18 @@ def main():
     print("transformed the dictionaries")
 
     idx = 0
-    for ja_word in tqdm(list(ja_dic.keys())):
-        en_words = en_dic.translate_k_nearest_neighbour(ja_dic[ja_word], k=15)
-        result[ja_word] = en_words
+    result = {}
+    result_f = open("en_ja_multifast.txt", "w")
 
-    text = json.dump(result, open("result.json", "w"),
-                     ensure_ascii=False, indent=2)
+    for en_word in tqdm(list(en_dic.keys())):
+        ja_words = ja_dic.translate_k_nearest_neighbour(en_dic[en_word], k=15)
+        result[en_word] = ja_words
+        idx += 1
+        result[en_word] = ja_words
+        resut_str = ",".join(result[en_word])
+        result_f.write(idx + "," + en_word + "," + resut_str + "\n")
+
+    result_f.close()
 
 
 if __name__ == "__main__":
