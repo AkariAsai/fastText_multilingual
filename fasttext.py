@@ -96,7 +96,7 @@ class FastVector:
         target_ids = similarity_vector.argsort()[::-1][:k]
 
         word_list = []
-        for targe_id in target_ids:
+        for target_id in target_ids:
             word_list.append(self.id2word[target_id])
 
         return word_list
