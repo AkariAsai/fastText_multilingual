@@ -12,10 +12,9 @@ def main():
     en_dic.apply_transform('alignment_matrices/en.txt')
     print("transformed the dictionaries")
 
-    # Ja_word_list 10 nearest neighbor
-    result = {}
+    idx = 0
     for ja_word in tqdm(list(ja_dic.keys())):
-        en_words = en_dic.translate_k_nearest_neighbour(ja_dic[ja_word], k=10)
+        en_words = en_dic.translate_k_nearest_neighbour(ja_dic[ja_word], k=15)
         result[ja_word] = en_words
 
     text = json.dump(result, open("result.json", "w"),
