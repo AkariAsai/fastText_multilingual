@@ -27,7 +27,7 @@ for en_word in en_word_list:
     ja_words = ja_dic.translate_k_nearest_neighbour(en_dic[en_word], k=20)
     result[en_word] = ja_words
     resut_str = ",".join(result[en_word])
-    result_f.write(ja_word + "," + resut_str + "\n")
+    result_f.write(en_word + "," + resut_str + "\n")
 
 result_f.close()
 #
