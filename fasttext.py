@@ -37,12 +37,12 @@ class FastVector:
             for i, line in enumerate(f):
                 elems = line.rstrip('\n').split(' ')
                 self.word2id[elems[0]] = i
-                self.embed[i] = elems[1:self.n_dim+1]
+                self.embed[i] = elems[1:self.n_dim + 1]
                 self.id2word.append(elems[0])
-        
+
         # Used in translate_inverted_softmax()
         self.softmax_denominators = None
-        
+
         if transform is not None:
             print('Applying transformation to embedding')
             self.apply_transform(transform)
@@ -58,18 +58,20 @@ class FastVector:
         text file containing a ndarray (compat. with np.loadtxt)
         or a numpy ndarray.
         """
-        transmat = np.loadtxt(transform) if isinstance(transform, str) else transform
+        transmat = np.loadtxt(transform) if isinstance(
+            transform, str) else transform
         self.embed = np.matmul(self.embed, transmat)
 
     def export(self, outpath):
         """
-        Transforming a large matrix of WordVectors is expensive. 
+        Transforming a large matrix of WordVectors is expensive.
         This method lets you write the transformed matrix back to a file for future use
-        :param The path to the output file to be written 
+        :param The path to the output file to be written
         """
         fout = open(outpath, "w")
 
-        # Header takes the guesswork out of loading by recording how many lines, vector dims
+        # Header takes the guesswork out of loading by recording how many
+        # lines, vector dims
         fout.write(str(self.n_words) + " " + str(self.n_dim) + "\n")
         for token in self.id2word:
             vector_components = ["%.6f" % number for number in self[token]]
@@ -82,9 +84,22 @@ class FastVector:
 
     def translate_nearest_neighbour(self, source_vector):
         """Obtain translation of source_vector using nearest neighbour retrieval"""
-        similarity_vector = np.matmul(FastVector.normalised(self.embed), source_vector)
+        similarity_vector = np.matmul(
+            FastVector.normalised(self.embed), source_vector)
         target_id = np.argmax(similarity_vector)
         return self.id2word[target_id]
+
+    def translate_k_nearest_neighbour(self, source_vector, k=10):
+        """Obtain translation of source_vector using nearest neighbour retrieval"""
+        similarity_vector = np.matmul(
+            FastVector.normalised(self.embed), source_vector)
+        target_ids = similarity_vector.argsort()[::-1][:k]
+
+        word_list = []
+        for targe_id in target_ids:
+            word_list.append(self.id2word[target_id])
+
+        return word_list
 
     def translate_inverted_softmax(self, source_vector, source_space, nsamples,
                                    beta=10., batch_size=100, recalculate=True):
@@ -104,7 +119,8 @@ class FastVector:
             self.softmax_denominators = np.zeros(self.embed.shape[0])
             while nsamples > 0:
                 # get batch of randomly sampled vectors from source space
-                sample_vectors = source_space.get_samples(min(nsamples, batch_size))
+                sample_vectors = source_space.get_samples(
+                    min(nsamples, batch_size))
                 # calculate cosine similarities between sampled vectors and
                 # all vectors in the target space
                 sample_similarities = \
@@ -116,17 +132,19 @@ class FastVector:
                 nsamples -= batch_size
         # cosine similarities between source_vector and all target vectors
         similarity_vector = np.matmul(embed_normalised,
-                                      source_vector/np.linalg.norm(source_vector))
-        # exponentiate and normalise with denominators to obtain inverted softmax
+                                      source_vector / np.linalg.norm(source_vector))
+        # exponentiate and normalise with denominators to obtain inverted
+        # softmax
         softmax_scores = np.exp(beta * similarity_vector) / \
-                         self.softmax_denominators
+            self.softmax_denominators
         # pick highest score as translation
         target_id = np.argmax(softmax_scores)
         return self.id2word[target_id]
 
     def get_samples(self, nsamples):
         """Return a matrix of nsamples randomly sampled vectors from embed"""
-        sample_ids = np.random.choice(self.embed.shape[0], nsamples, replace=False)
+        sample_ids = np.random.choice(
+            self.embed.shape[0], nsamples, replace=False)
         return self.embed[sample_ids]
 
     @classmethod
@@ -136,7 +154,7 @@ class FastVector:
             mat, axis=axis, ord=order, keepdims=True)
         norm[norm == 0] = 1
         return mat / norm
-    
+
     @classmethod
     def cosine_similarity(cls, vec_a, vec_b):
         """Compute cosine similarity between vec_a and vec_b"""
