@@ -6,7 +6,7 @@ en_dic = FastVector(vector_file='../vecmap/data/wiki.en.vec')
 print("loaded the dictionaries")
 
 ja_dic.apply_transform('alignment_matrices/ja.txt')
-en_dic.apply_transform('alignment_matrices/ja.txt')
+en_dic.apply_transform('alignment_matrices/en.txt')
 print("transformed the dictionaries")
 
 en_word_list = ["cat", "dog", "apple", "car",
@@ -28,13 +28,3 @@ for en_word in en_word_list:
 
 text = json.dump(result, open("result.json", "w"),
                  ensure_ascii=False, indent=2)
-
-# with open("result.json", "w") as fh:
-# #     fh.write(text.encode("utf-8"))
-#
-#
-# def main():
-#
-#
-# if __name__ == "__main__":
-#     main()
