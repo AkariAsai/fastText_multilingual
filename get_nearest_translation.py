@@ -1,5 +1,6 @@
 import numpy as np
 import json
+from tqdm import tqdm
 
 class VecMapVector:
     def __init__(self, vector_file='', transform=None):
