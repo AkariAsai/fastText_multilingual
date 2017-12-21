@@ -114,26 +114,38 @@ def main():
     en_dic = VecMapVector(vector_file='/home/dl-exp/vecmap/data/wiki.en.mapped.txt')
     print("loaded the dictionaries")
 
-    en_word_list = ["cat", "dog", "apple", "car",
-                    "train", "school", "student", "teacher"]
-    ja_word_list = ["猫", "犬", "りんご", "車", "電車", "学校", "生徒", "先生"]
-
-    result_f = open("multi_vecmap.txt", "w")
+    idx = 0
     result = {}
-    # Ja_word_list 10 nearest neighbor
-    for ja_word in ja_word_list:
-        en_words = en_dic.translate_k_nearest_neighbour(ja_dic[ja_word], k=20)
-        result[ja_word] = en_words
-        resut_str = ",".join(result[ja_word])
-        result_f.write(ja_word + "," + resut_str + "\n")
+    result_f = open("en_ja_multifast.txt", "w")
+    en_word_list = list(en_dic.word2id.keys())
+    print("The total length of English pretrained vector : " + str(len(en_word_list)))
 
-
-    # En_word_list 10 nearest neighbor
-    for en_word in en_word_list:
-        ja_words = ja_dic.translate_k_nearest_neighbour(en_dic[en_word], k=20)
+    for en_word in tqdm(en_word_list):
+        ja_words = ja_dic.translate_k_nearest_neighbour(en_dic[en_word], k=15)
+        result[en_word] = ja_words
+        idx += 1
         result[en_word] = ja_words
         resut_str = ",".join(result[en_word])
-        result_f.write(en_word + "," + resut_str + "\n")
+        result_f.write(str(idx) + "," + en_word + "," + resut_str + "\n")
+        if idx > 500:
+            break
+
+    result_f.close()
+
+    idx = 0
+    result = {}
+    result_f = open("ja_en_multifast.txt", "w")
+    ja_word_list = list(ja_dic.word2id.keys())
+
+    for ja_word in tqdm(ja_word_list):
+        en_words = en_dic.translate_k_nearest_neighbour(ja_dic[ja_word], k=15)
+        result[en_word] = ja_words
+        idx += 1
+        result[ja_word] = en_words
+        resut_str = ",".join(result[ja_word])
+        result_f.write(str(idx) + "," + en_word + "," + resut_str + "\n")
+        if idx > 500:
+            break
 
     result_f.close()
 
