@@ -128,8 +128,6 @@ def main():
         result[en_word] = ja_words
         resut_str = ",".join(result[en_word])
         result_f.write(str(idx) + "," + en_word + "," + resut_str + "\n")
-        if idx > 500:
-            break
 
     result_f.close()
 
@@ -144,9 +142,7 @@ def main():
         idx += 1
         result[ja_word] = en_words
         resut_str = ",".join(result[ja_word])
-        result_f.write(str(idx) + "," + en_word + "," + resut_str + "\n")
-        if idx > 500:
-            break
+        result_f.write(str(idx) + "," + ja_word + "," + resut_str + "\n")
 
     result_f.close()
 
