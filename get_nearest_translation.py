@@ -110,8 +110,8 @@ class VecMapVector:
         return self.embed[self.word2id[key]]
 
 def main():
-    ja_dic = VecMapVector(vector_file='/home/dl-exp/vecmap/data/wiki.en.mapped.txt')
-    en_dic = VecMapVector(vector_file='/home/dl-exp/vecmap/data/wiki.ja.mapped.txt')
+    ja_dic = VecMapVector(vector_file='/home/dl-exp/vecmap/data/wiki.ja.mapped.txt')
+    en_dic = VecMapVector(vector_file='/home/dl-exp/vecmap/data/wiki.en.mapped.txt')
     print("loaded the dictionaries")
 
     en_word_list = ["cat", "dog", "apple", "car",
