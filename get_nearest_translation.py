@@ -33,7 +33,7 @@ class VecMapVector:
     def translate_k_nearest_neighbour(self, source_vector, k=10):
         """Obtain translation of source_vector using nearest neighbour retrieval"""
         similarity_vector = np.matmul(
-            FastVector.normalised(self.embed), source_vector)
+            VecMapVector.normalised(self.embed), source_vector)
         target_ids = similarity_vector.argsort()[::-1][:k]
 
         word_list = []
@@ -54,7 +54,7 @@ class VecMapVector:
         Denominators from previous call are reused if recalculate=False. This saves
         time if multiple words are translated from the same source language.
         """
-        embed_normalised = FastVector.normalised(self.embed)
+        embed_normalised = VecMapVector.normalised(self.embed)
         # calculate contributions to softmax denominators in batches
         # to save memory
         if self.softmax_denominators is None or recalculate is True:
@@ -67,7 +67,7 @@ class VecMapVector:
                 # all vectors in the target space
                 sample_similarities = \
                     np.matmul(embed_normalised,
-                              FastVector.normalised(sample_vectors).transpose())
+                              VecMapVector.normalised(sample_vectors).transpose())
                 # accumulate contribution to denominators
                 self.softmax_denominators \
                     += np.sum(np.exp(beta * sample_similarities), axis=1)
